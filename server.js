@@ -1,5 +1,6 @@
 import express from 'express'
-import { connectDB } from './db.js'
+import { connectDB } from './src/config/db.js'
+import userRouter from './src/user/user.route.js'
 
 const app = express()
 
@@ -30,15 +31,16 @@ const reqLogger = (req,res,next)=>{
 
 app.use(reqLogger)
 
+
+// Register routes
+app.use('/api/users',userRouter)
+
 app.get('/health',(req,res)=>{
     console.log(req.query.name)
     res.status(200).json({"messege":'Hey!I am Healthy.this is not the same format'})
 })
+ 
 
-app.post('/api/users',reqLogger,(req,res)=>{
-    throw new Error ('Something went wrong!')
-    res.json({})
-})
 
 app.use((err,req,res,next)=>{
     console.error(err.stack);
